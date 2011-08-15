@@ -99,6 +99,7 @@ sub set_bound
     my %bindings =
     (
         SCALAR => sub { $$ref },
+        REF    => sub { $$ref },
         ARRAY  => sub { @$ref },
         HASH   => sub { %$ref },
     );
