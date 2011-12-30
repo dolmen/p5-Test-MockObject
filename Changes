@@ -1,6 +1,8 @@
 Revision history for Perl extension Test::MockObject.
 
 {{$NEXT}}
+    - preserve prototypes when mocking methods (RT #73556, Olivier Mengué,
+      sponsored by Ijenko)
 
 1.20110612 2011-06-11 23:53:50 America/Los_Angeles
     - removed Module::Build detritus

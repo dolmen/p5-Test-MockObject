@@ -149,12 +149,13 @@ sub mock
 
     Test::MockObject::_set_log( $self, $name, ( $name =~ s/^-// ? 0 : 1 ) );
 
-    my $mock_sub = sub 
+    my $mock_sub = Scalar::Util::set_prototype(sub
     {
-        my ($self) = @_;
-        $self->log_call( $name, @_ );
-        $sub->( @_ );
-    };
+        $_[0]->log_call( $name, @_ );
+        goto &$sub;
+    }, prototype $sub );
+
+    # TODO: copy attributes such as 'lvalue'
 
     {
         no strict 'refs';
