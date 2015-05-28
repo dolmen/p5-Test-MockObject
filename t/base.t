@@ -192,12 +192,13 @@ is( $mock->bound(), 1, 'set_bound() should bind to a scalar reference' );
 is( $result, $mock, '... and should return itself' );
 $arg = 2;
 is( $mock->bound(), 2, '... and its return value should change with the ref' );
-$arg = [ 3, 5, 7 ];
-$mock->set_bound( 'bound_array', $arg );
+my @arg = ( 3, 5, 7 );
+$mock->set_bound( 'bound_array', \@arg );
 is( join('-', $mock->bound_array()), '3-5-7', '... handling array refs' );
-$arg = { foo => 'bar' };
-$mock->set_bound( 'bound_hash', $arg );
+my %arg = ( foo => 'bar' );
+$mock->set_bound( 'bound_hash', \%arg );
 is( join('-', $mock->bound_hash()), 'foo-bar', '... and hash refs' );
+
 
 {
 	local $INC{'Carp.pm'} = 1;
