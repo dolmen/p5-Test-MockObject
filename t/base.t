@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 my $package = 'Test::MockObject';
-use Test::More tests => 103;
+use Test::More tests => 104;
 use_ok( $package );
 
 # new()
@@ -192,13 +192,14 @@ is( $mock->bound(), 1, 'set_bound() should bind to a scalar reference' );
 is( $result, $mock, '... and should return itself' );
 $arg = 2;
 is( $mock->bound(), 2, '... and its return value should change with the ref' );
+$arg = [ 8, 9 ];
+is_deeply( $mock->bound(), [ 8, 9 ], '... and the value of the ref can be anything');
 my @arg = ( 3, 5, 7 );
 $mock->set_bound( 'bound_array', \@arg );
 is( join('-', $mock->bound_array()), '3-5-7', '... handling array refs' );
 my %arg = ( foo => 'bar' );
 $mock->set_bound( 'bound_hash', \%arg );
 is( join('-', $mock->bound_hash()), 'foo-bar', '... and hash refs' );
-
 
 {
 	local $INC{'Carp.pm'} = 1;
