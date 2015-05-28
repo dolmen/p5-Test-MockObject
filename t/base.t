@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 my $package = 'Test::MockObject';
-use Test::More tests => 104;
+use Test::More tests => 106;
 use_ok( $package );
 
 # new()
@@ -200,6 +200,12 @@ is( join('-', $mock->bound_array()), '3-5-7', '... handling array refs' );
 my %arg = ( foo => 'bar' );
 $mock->set_bound( 'bound_hash', \%arg );
 is( join('-', $mock->bound_hash()), 'foo-bar', '... and hash refs' );
+$mock->set_bound( 'bound_ref', \$arg );
+is_deeply( $mock->bound_ref(), [ 8, 9 ], '... and any ref');
+$arg = bless \(my $x), 'Foo';
+$mock->set_bound( 'bound_obj', \$arg );
+isa_ok( $mock->bound_obj(), 'Foo', '... and even an object');
+
 
 {
 	local $INC{'Carp.pm'} = 1;
