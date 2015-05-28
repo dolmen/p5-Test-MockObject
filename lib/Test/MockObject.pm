@@ -96,16 +96,13 @@ sub set_bound
 {
     my ($self, $name, $ref) = @_;
 
-    my %bindings =
-    (
-        SCALAR => sub { $$ref },
-        REF    => sub { $$ref },
-        ARRAY  => sub { @$ref },
-        HASH   => sub { %$ref },
-    );
+    my $r = ref $ref;
+    my $binding = ($r eq 'SCALAR' || $r eq 'REF') ? sub { $$ref }
+                :  $r eq 'ARRAY'                  ? sub { @$ref }
+                :  $r eq 'HASH'                   ? sub { %$ref }
+                : do { require Carp; Carp::croak("not a valid reference") };
 
-    return unless exists $bindings{reftype( $ref )};
-    $self->mock( $name,  $bindings{reftype( $ref )} );
+    $self->mock( $name, $binding );
 }
 
 # hack around debugging mode being too smart for my sub names
